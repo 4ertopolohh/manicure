@@ -18,7 +18,7 @@ export function NailPreview({
   const height = length === "long" ? 102 : length === "medium" ? 85 : 67;
   const nailPath =
     shape === "almond"
-      ? `M0 65 C-30 45 -23 ${-height + 20} 0 ${-height} C23 ${-height + 20} 30 45 0 65Z`
+      ? `M-25 40 C-27 10 -23 ${-height + 20} 0 ${-height} C23 ${-height + 20} 27 10 25 40 Q25 67 0 67 Q-25 67 -25 40Z`
       : shape === "oval"
         ? `M-25 40 V${-height + 30} Q-25 ${-height} 0 ${-height} Q25 ${-height} 25 ${-height + 30} V40 Q25 67 0 67 Q-25 67-25 40Z`
         : `M-26 40 V${-height + 8} Q-26 ${-height} -18 ${-height} H18 Q26 ${-height} 26 ${-height + 8} V40 Q26 67 0 67 Q-26 67-26 40Z`;
@@ -188,7 +188,7 @@ export default function Designer({
             </div>
             <button
               className="button"
-              disabled={!service}
+              disabled={!service || selected.length !== 4}
               onClick={() =>
                 service &&
                 onBook({ service: service.id, options: Object.values(chosen) })

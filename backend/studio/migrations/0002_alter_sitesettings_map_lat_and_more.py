@@ -7,18 +7,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('studio', '0001_initial'),
+        ("studio", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sitesettings',
-            name='map_lat',
-            field=models.DecimalField(decimal_places=6, default=Decimal('55.757'), max_digits=9, verbose_name='Широта для Яндекс Карт'),
+            model_name="sitesettings",
+            name="map_lat",
+            field=models.DecimalField(
+                decimal_places=6,
+                default=Decimal("55.757"),
+                max_digits=9,
+                verbose_name="Широта для Яндекс Карт",
+            ),
         ),
         migrations.AlterField(
-            model_name='sitesettings',
-            name='map_lon',
-            field=models.DecimalField(decimal_places=6, default=Decimal('37.598'), max_digits=9, verbose_name='Долгота для Яндекс Карт'),
+            model_name="sitesettings",
+            name="map_lon",
+            field=models.DecimalField(
+                decimal_places=6,
+                default=Decimal("37.598"),
+                max_digits=9,
+                verbose_name="Долгота для Яндекс Карт",
+            ),
         ),
     ]

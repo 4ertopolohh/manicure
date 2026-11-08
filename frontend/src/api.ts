@@ -14,7 +14,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": document.cookie.match(/(?:^|; )quietform_csrf=([^;]*)/)?.[1] || csrf,
+      "X-CSRFToken":
+        document.cookie.match(/(?:^|; )quietform_csrf=([^;]*)/)?.[1] || csrf,
       ...init?.headers,
     },
   });

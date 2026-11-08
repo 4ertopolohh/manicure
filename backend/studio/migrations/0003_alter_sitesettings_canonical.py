@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('studio', '0002_alter_sitesettings_map_lat_and_more'),
+        ("studio", "0002_alter_sitesettings_map_lat_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sitesettings',
-            name='canonical',
-            field=models.URLField(default='http://127.0.0.1:8018', help_text='Для canonical, Open Graph и sitemap. После публикации укажите HTTPS-домен.', verbose_name='Основной адрес сайта'),
+            model_name="sitesettings",
+            name="canonical",
+            field=models.URLField(
+                default="http://127.0.0.1:8018",
+                help_text="Для canonical, Open Graph и sitemap. После публикации укажите HTTPS-домен.",
+                verbose_name="Основной адрес сайта",
+            ),
         ),
     ]

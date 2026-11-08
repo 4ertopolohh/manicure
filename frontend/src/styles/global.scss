@@ -229,6 +229,7 @@ button {
     border-color 0.25s ease,
     transform 0.25s ease,
     box-shadow 0.25s ease,
+    filter 0.25s ease,
     opacity 0.25s ease;
 }
 button:not(:disabled):hover {
@@ -241,3 +242,5 @@ button:not(:disabled):hover {
 button:active:not(:disabled) {
   transform: translateY(1px);
 }
+summary { transition: color .25s ease; }
+summary:hover { color: var(--wine); }

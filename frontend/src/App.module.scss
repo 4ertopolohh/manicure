@@ -899,13 +899,29 @@
   }
 }
 @media (max-width: 580px) {
+  .headerInner {
+    gap: 10px;
+  }
+  .headerCta {
+    white-space: nowrap;
+    font-size: 11px;
+    padding: 10px 12px;
+    min-height: 38px;
+  }
+  .menuButton {
+    font-size: 11px;
+    padding: 8px 0 8px 8px;
+  }
+  .header .logo {
+    font-size: 27px;
+  }
   .hero {
     grid-template-columns: 1fr;
     padding-top: 35px;
     gap: 40px;
   }
   .heroCopy h1 {
-    font-size: 73px;
+    font-size: clamp(60px, 18.5vw, 73px);
     margin-top: 27px;
     span {
       margin-left: 25px;

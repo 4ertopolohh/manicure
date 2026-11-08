@@ -29,7 +29,7 @@ export default function BookingDialog({
 }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [selected, setSelected] = useState<Selection>(
-    selection || { service: content.services[0].id, options: [] },
+    selection || { service: content.services[0]?.id || 0, options: [] },
   );
   const [step, setStep] = useState(0);
   const [date, setDate] = useState(content.today);
@@ -48,7 +48,13 @@ export default function BookingDialog({
   const [notice, setNotice] = useState("");
   const [cancelConfirm, setCancelConfirm] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
-  const service = content.services.find((v) => v.id === selected.service)!;
+  const service = content.services.find((v) => v.id === selected.service) || {
+    id: 0,
+    name: "Услуга недоступна",
+    price: 0,
+    duration: 0,
+    audience: "women",
+  };
   const options = content.options.filter((o) =>
     selected.options.includes(o.id),
   );
@@ -138,7 +144,10 @@ export default function BookingDialog({
     e.preventDefault();
     const form = e.currentTarget;
     const phone = form.elements.namedItem("phone") as HTMLInputElement;
-    if (phone.value.replace(/\D/g, "").length < 10) {
+    if (
+      phone.value.replace(/\D/g, "").length < 10 ||
+      phone.value.replace(/\D/g, "").length > 15
+    ) {
       setError("Укажите телефон: от 10 до 15 цифр.");
       phone.focus();
       return;
@@ -215,9 +224,9 @@ export default function BookingDialog({
     >
       <div className={s.panel}>
         <div className={s.top}>
-          <a href="#" className={s.brand} onClick={(e) => e.preventDefault()}>
-            тихая форма
-          </a>
+          <span className={s.brand}>
+            {content.studio.name.toLocaleLowerCase("ru")}
+          </span>
           <button
             type="button"
             className={s.close}

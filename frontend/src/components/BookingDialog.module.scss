@@ -18,6 +18,12 @@
   padding: 27px 38px 35px;
 }
 .top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--paper);
+  padding: 10px 0;
+  margin-top: -10px;
   display: flex;
   align-items: center;
   justify-content: space-between;

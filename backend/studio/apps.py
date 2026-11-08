@@ -1,4 +1,6 @@
 from django.apps import AppConfig
+
+
 class StudioConfig(AppConfig):
-    name = 'studio'
-    verbose_name = 'Студия и запись'
+    name = "studio"
+    verbose_name = "Студия и запись"
