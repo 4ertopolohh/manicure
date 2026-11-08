@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "quiet-form"
+version = "1.0.0"
+description = "Privacy-preserving manicure booking demonstration"
+authors = ["Triad Studio"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = ">=5.2,<5.3"
+pillow = ">=11.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"

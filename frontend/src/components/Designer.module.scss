@@ -1,0 +1,278 @@
+.atelier {
+  background: #ece3de;
+  padding: 65px 0;
+}
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 85px;
+}
+.visual {
+  position: relative;
+}
+.visualHeading {
+  h2 {
+    font-size: 56px;
+    span {
+      color: var(--wine);
+    }
+  }
+  p {
+    margin-top: 18px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+}
+.nails {
+  margin: 0 -15px;
+  height: 310px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.previewSvg {
+  width: 100%;
+  max-width: 430px;
+  height: 100%;
+  path {
+    transition:
+      d 0.5s,
+      fill 0.5s;
+  }
+}
+.swatchCaption {
+  border-top: 1px solid #cdbeb5;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+  font-size: 10px;
+  span:last-child {
+    font-family: var(--script);
+    font-size: 19px;
+    color: var(--wine);
+  }
+}
+.disclaimer {
+  font-size: 8px;
+  color: var(--muted);
+  margin-top: 18px;
+  line-height: 1.6;
+}
+.controls {
+  padding-top: 10px;
+}
+.controlsIntro {
+  font: 28px var(--serif);
+  margin-bottom: 28px;
+}
+.controls fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 22px;
+  legend {
+    padding: 0;
+    margin-bottom: 12px;
+    font-size: 11px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    span {
+      font-size: 9px;
+      color: var(--muted);
+    }
+  }
+}
+.choices {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  button {
+    background: transparent;
+    border: 1px solid #cbbdb5;
+    border-radius: 5px;
+    padding: 10px 14px;
+    font-size: 10px;
+    transition: 0.2s;
+    small {
+      display: block;
+      font-size: 8px;
+      margin-top: 4px;
+      color: var(--muted);
+    }
+    &:hover {
+      border-color: var(--wine);
+      background: #f4f0e97a;
+    }
+    &.selected {
+      background: var(--paper);
+      border-color: var(--wine);
+      color: var(--wine);
+    }
+  }
+}
+.colors {
+  display: flex;
+  gap: 13px;
+  flex-wrap: wrap;
+}
+.color {
+  padding: 5px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  span {
+    display: block;
+    background: var(--swatch);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px #302e2c10;
+  }
+  &.selected {
+    border-color: var(--wine);
+  }
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+.total {
+  border-top: 1px solid #cdbeb5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 28px;
+  padding-top: 22px;
+  & > div > span {
+    font-size: 9px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 8px;
+  }
+  strong {
+    font-size: 24px;
+    font-weight: 400;
+    white-space: nowrap;
+    small {
+      font-size: 9px;
+      color: var(--muted);
+      display: block;
+      margin-top: 5px;
+    }
+  }
+  :global(.button) {
+    padding: 15px 20px;
+    font-size: 10px;
+  }
+}
+.footnote {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 18px;
+}
+@media (max-width: 1100px) {
+  .inner {
+    gap: 45px;
+  }
+  .total {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .total :global(.button) {
+    width: 100%;
+  }
+  .visualHeading h2 {
+    font-size: 51px;
+  }
+  .choices button {
+    padding: 10px;
+  }
+  .swatchCaption {
+    gap: 10px;
+  }
+}
+@media (max-width: 800px) {
+  .inner {
+    gap: 30px;
+  }
+  .visualHeading h2 {
+    font-size: 44px;
+  }
+  .controlsIntro {
+    font-size: 23px;
+  }
+  .colors {
+    gap: 7px;
+  }
+  .color span {
+    width: 26px;
+    height: 26px;
+  }
+  .swatchCaption {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .nails {
+    height: 320px;
+    margin: 10px -15px;
+  }
+  .controls fieldset {
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 580px) {
+  .atelier {
+    padding: 48px 0;
+  }
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .visualHeading h2 {
+    font-size: 51px;
+  }
+  .nails {
+    height: 280px;
+    margin: -8px 0 0;
+  }
+  .swatchCaption {
+    flex-direction: row;
+  }
+  .disclaimer {
+    font-size: 8px;
+  }
+  .controls {
+    border-top: 1px solid #cdbeb5;
+    padding-top: 25px;
+  }
+  .controlsIntro {
+    font-size: 28px;
+  }
+  .choices {
+    gap: 8px;
+    button {
+      padding: 12px 17px;
+      font-size: 11px;
+    }
+  }
+  .color span {
+    width: 32px;
+    height: 32px;
+  }
+  .colors {
+    gap: 13px;
+  }
+  .total {
+    flex-direction: row;
+    align-items: center;
+  }
+  .total :global(.button) {
+    width: auto;
+    padding: 16px;
+    font-size: 10px;
+  }
+  .total strong {
+    font-size: 25px;
+  }
+}
