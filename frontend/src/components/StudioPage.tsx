@@ -36,13 +36,6 @@ export default function StudioPage({
             </button>
             <a href="#atelier">Подобрать свой образ</a>
           </div>
-          <div className={s.heroNote}>
-            <span className={s.smallLine} />
-            <p>
-              Без спешки. Без лишнего.
-              <br />С вниманием к тебе.
-            </p>
-          </div>
         </div>
         <div className={s.heroVisual}>
           <div className={s.heroImage}>
@@ -206,6 +199,33 @@ export default function StudioPage({
             <p>
               Аккуратная длина, чистая обработка и естественный вид. Просто
               часть заботы о себе.
+            </p>
+            <dl className={s.menDetails}>
+              <div>
+                <dt>Форма и длина</dt>
+                <dd>
+                  Укоротим свободный край и придадим ногтям аккуратную форму,
+                  удобную в повседневной жизни.
+                </dd>
+              </div>
+              <div>
+                <dt>Обработка и уход</dt>
+                <dd>
+                  Уделим внимание кутикуле и коже вокруг ногтя. Завершим
+                  процедуру увлажняющим уходом.
+                </dd>
+              </div>
+              <div>
+                <dt>Естественный результат</dt>
+                <dd>
+                  Без цветного покрытия и лишнего блеска. Ухоженные руки,
+                  которые остаются собой.
+                </dd>
+              </div>
+            </dl>
+            <p className={s.menAdvice}>
+              Первый раз на маникюре? Специальная подготовка не нужна. Перед
+              началом обсудим пожелания и объясним каждый этап.
             </p>
             {content.services
               .filter((v) => v.audience === "men")

@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Content, Kind, Selection } from "../types";
 import { money } from "../api";
 import s from "./Designer.module.scss";
+import NailShapeChoice from "./NailShapeChoice";
 
 export function NailPreview({
   shape = "square",
@@ -143,38 +144,60 @@ export default function Designer({
                   <span>{selected.find((o) => o.kind === "color")?.name}</span>
                 )}
               </legend>
-              <div className={kind === "color" ? s.colors : s.choices}>
+              <div
+                className={
+                  kind === "shape"
+                    ? s.shapes
+                    : kind === "color"
+                      ? s.colors
+                      : s.choices
+                }
+              >
                 {content.options
                   .filter((o) => o.kind === kind)
-                  .map((o) => (
-                    <button
-                      key={o.id}
-                      type="button"
-                      aria-pressed={chosen[kind] === o.id}
-                      aria-label={o.name}
-                      title={
-                        o.name + (o.extra_price ? ` +${o.extra_price} ₽` : "")
-                      }
-                      className={`${chosen[kind] === o.id ? s.selected : ""} ${kind === "color" ? s.color : ""}`}
-                      style={
-                        kind === "color"
-                          ? ({ "--swatch": o.value } as React.CSSProperties)
-                          : undefined
-                      }
-                      onClick={() => setChosen((v) => ({ ...v, [kind]: o.id }))}
-                    >
-                      {kind === "color" ? (
-                        <span />
-                      ) : (
-                        <>
-                          {o.name}
-                          {o.extra_price > 0 && (
-                            <small>+{o.extra_price} ₽</small>
-                          )}
-                        </>
-                      )}
-                    </button>
-                  ))}
+                  .map((o) =>
+                    kind === "shape" ? (
+                      <NailShapeChoice
+                        key={o.id}
+                        value={o.value}
+                        name={o.name}
+                        selected={chosen[kind] === o.id}
+                        onSelect={() =>
+                          setChosen((v) => ({ ...v, [kind]: o.id }))
+                        }
+                      />
+                    ) : (
+                      <button
+                        key={o.id}
+                        type="button"
+                        aria-pressed={chosen[kind] === o.id}
+                        aria-label={o.name}
+                        title={
+                          o.name + (o.extra_price ? ` +${o.extra_price} ₽` : "")
+                        }
+                        className={`${chosen[kind] === o.id ? s.selected : ""} ${kind === "color" ? s.color : ""}`}
+                        style={
+                          kind === "color"
+                            ? ({ "--swatch": o.value } as React.CSSProperties)
+                            : undefined
+                        }
+                        onClick={() =>
+                          setChosen((v) => ({ ...v, [kind]: o.id }))
+                        }
+                      >
+                        {kind === "color" ? (
+                          <span />
+                        ) : (
+                          <>
+                            {o.name}
+                            {o.extra_price > 0 && (
+                              <small>+{o.extra_price} ₽</small>
+                            )}
+                          </>
+                        )}
+                      </button>
+                    ),
+                  )}
               </div>
             </fieldset>
           ))}

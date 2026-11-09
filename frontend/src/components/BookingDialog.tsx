@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import type { Booking, Content, Selection, Slot } from "../types";
+import type { Booking, Content, NailOption, Selection, Slot } from "../types";
 import {
   availability,
   longDate,
@@ -9,6 +9,7 @@ import {
   money,
 } from "../api";
 import Calendar from "./Calendar";
+import NailShapeChoice from "./NailShapeChoice";
 import s from "./BookingDialog.module.scss";
 
 interface Props {
@@ -61,6 +62,20 @@ export default function BookingDialog({
   const price = service.price + options.reduce((n, o) => n + o.extra_price, 0);
   const duration =
     service.duration + options.reduce((n, o) => n + o.extra_minutes, 0);
+  const chooseOption = (option: NailOption) => {
+    setTime("");
+    setSelected((current) => ({
+      ...current,
+      options: [
+        ...current.options.filter(
+          (id) =>
+            content.options.find((candidate) => candidate.id === id)?.kind !==
+            option.kind,
+        ),
+        option.id,
+      ],
+    }));
+  };
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     dialog.current?.showModal();
@@ -409,51 +424,51 @@ export default function BookingDialog({
                           </legend>
                           <div
                             className={
-                              kind === "color"
-                                ? s.colorChoices
-                                : s.optionChoices
+                              kind === "shape"
+                                ? s.shapes
+                                : kind === "color"
+                                  ? s.colorChoices
+                                  : s.optionChoices
                             }
                           >
                             {content.options
                               .filter((o) => o.kind === kind)
-                              .map((o) => (
-                                <button
-                                  type="button"
-                                  key={o.id}
-                                  aria-pressed={selected.options.includes(o.id)}
-                                  aria-label={o.name}
-                                  title={o.name}
-                                  className={
-                                    selected.options.includes(o.id)
-                                      ? s.chosenOption
-                                      : ""
-                                  }
-                                  style={
-                                    kind === "color"
-                                      ? ({
-                                          "--swatch": o.value,
-                                        } as React.CSSProperties)
-                                      : undefined
-                                  }
-                                  onClick={() => {
-                                    setTime("");
-                                    setSelected((v) => ({
-                                      ...v,
-                                      options: [
-                                        ...v.options.filter(
-                                          (id) =>
-                                            content.options.find(
-                                              (o) => o.id === id,
-                                            )?.kind !== kind,
-                                        ),
-                                        o.id,
-                                      ],
-                                    }));
-                                  }}
-                                >
-                                  {kind === "color" ? <span /> : o.name}
-                                </button>
-                              ))}
+                              .map((o) =>
+                                kind === "shape" ? (
+                                  <NailShapeChoice
+                                    key={o.id}
+                                    value={o.value}
+                                    name={o.name}
+                                    selected={selected.options.includes(o.id)}
+                                    onSelect={() => chooseOption(o)}
+                                  />
+                                ) : (
+                                  <button
+                                    type="button"
+                                    key={o.id}
+                                    aria-pressed={selected.options.includes(
+                                      o.id,
+                                    )}
+                                    aria-label={o.name}
+                                    title={o.name}
+                                    className={
+                                      selected.options.includes(o.id)
+                                        ? s.chosenOption
+                                        : ""
+                                    }
+                                    style={
+                                      kind === "color"
+                                        ? ({
+                                            "--swatch": o.value,
+                                          } as React.CSSProperties)
+                                        : undefined
+                                    }
+                                    onClick={() => chooseOption(o)}
+                                  >
+                                    {kind === "color" ? <span /> : o.name}
+                                  </button>
+                                ),
+                              )}
                           </div>
                         </fieldset>
                       ),

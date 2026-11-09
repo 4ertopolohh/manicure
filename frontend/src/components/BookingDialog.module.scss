@@ -155,6 +155,11 @@
     }
   }
 }
+.shapes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 .colorChoices {
   display: flex;
   gap: 9px;
