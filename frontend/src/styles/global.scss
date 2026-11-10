@@ -19,6 +19,7 @@
   background: #f4f0e9;
   font-synthesis: none;
   font-size: 14px;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
   --paper: #f4f0e9;
   --ink: #302e2c;
   --wine: #722f40;
@@ -151,17 +152,59 @@ section {
 .muted {
   color: var(--muted);
 }
+// Content is visible by default; only a working observer arms the entrance.
 .reveal {
+  --motion-x: 0px;
+  --motion-y: 32px;
+  --motion-scale: 1;
+  --motion-delay: 0ms;
+  transition: opacity 750ms var(--ease-out) var(--motion-delay),
+    transform 850ms var(--ease-out) var(--motion-delay),
+    clip-path 950ms var(--ease-out) var(--motion-delay);
+}
+.reveal.motion-pending {
   opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.8s,
-    transform 0.8s;
+  transform: translate(var(--motion-x), var(--motion-y)) scale(var(--motion-scale));
 }
-.reveal.visible {
-  opacity: 1;
-  transform: none;
+.motion-right { --motion-x: 28px; --motion-y: 0px; }
+.motion-scale { --motion-y: 0px; --motion-scale: .94; }
+.motion-row { --motion-y: 16px; }
+.motion-image { --motion-y: 0px; }
+.motion-image > :first-child {
+  clip-path: inset(0);
+  transition: clip-path 950ms var(--ease-out) var(--motion-delay);
 }
+.motion-image.motion-pending > :first-child { clip-path: inset(0 0 100% 0); }
+.motion-stagger > * {
+  transition: opacity 650ms var(--ease-out), transform 800ms var(--ease-out);
+  transition-delay: calc(var(--order, 0) * 90ms);
+}
+@for $i from 1 through 12 {
+  .motion-stagger > :nth-child(#{$i}) { --order: #{$i - 1}; }
+}
+.motion-stagger.motion-pending > * { opacity: 0; transform: translateY(20px); }
+.motion-hero.visible {
+  h1 { animation: enter 850ms var(--ease-out) both; }
+  h1 span { animation: ink-appear 1000ms var(--ease-out) 180ms both; }
+  > p { animation: enter 750ms var(--ease-out) 280ms both; }
+  > div { animation: enter 750ms var(--ease-out) 400ms both; }
+}
+.motion-draw.visible path:first-child {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: draw-line 1200ms var(--ease-out) forwards;
+}
+@keyframes draw-line { to { stroke-dashoffset: 0; } }
+@keyframes ink-appear { from { opacity: 0; clip-path: inset(0 100% 0 0); } to { opacity: 1; clip-path: inset(0); } }
+@keyframes choice-pulse { 50% { box-shadow: 0 0 0 4px #722f4018; } }
+@keyframes feedback { from { opacity: 0; translate: 0 6px; } to { opacity: 1; translate: 0 0; } }
+button[aria-pressed="true"] { animation: choice-pulse 280ms ease-out; }
+input { transition: border-color 200ms, background-color 200ms, box-shadow 200ms; }
+input:focus { box-shadow: 0 0 0 3px #722f4015; }
+input:user-invalid { border-color: var(--wine); background-color: #f5e4df; }
+[role="alert"], [role="status"] { animation: feedback 280ms var(--ease-out); }
+.textButton { transition: color 200ms, border-color 200ms, transform 200ms; }
+@media (hover: none) { .button:hover { transform: none; box-shadow: none; } }
 .skeleton {
   background: #e7e0d7;
   border-radius: 6px;
@@ -244,3 +287,18 @@ button:active:not(:disabled) {
 }
 summary { transition: color .25s ease; }
 summary:hover { color: var(--wine); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.motion-pending, .motion-stagger.motion-pending > * {
+    opacity: 1; transform: none; clip-path: none;
+  }
+  .motion-image > :first-child { clip-path: none; }
+  [data-parallax] { --parallax: 0px !important; }
+  .motion-draw path:first-child { stroke-dashoffset: 0 !important; }
+}
+
+@media (max-width: 800px) {
+  .reveal { --motion-y: 18px; }
+  .motion-right { --motion-x: 12px; --motion-y: 0px; }
+  .motion-image, .motion-scale { --motion-y: 0px; }
+}

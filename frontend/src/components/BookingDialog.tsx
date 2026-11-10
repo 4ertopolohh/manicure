@@ -32,6 +32,8 @@ export default function BookingDialog({
   const [selected, setSelected] = useState<Selection>(
     selection || { service: content.services[0]?.id || 0, options: [] },
   );
+  const [closing, setClosing] = useState(false);
+  const closeTimer = useRef<number | undefined>(undefined);
   const [step, setStep] = useState(0);
   const [date, setDate] = useState(content.today);
   const [time, setTime] = useState("");
@@ -82,6 +84,7 @@ export default function BookingDialog({
     const old = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
+      window.clearTimeout(closeTimer.current);
       document.body.style.overflow = old;
       previous?.focus();
       photoRef.current.forEach((p) => URL.revokeObjectURL(p.url));
@@ -222,12 +225,23 @@ export default function BookingDialog({
     }
   };
   const dismiss = () => {
-    if (!pending) onClose();
+    if (pending || closing) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      dialog.current?.close();
+      onClose();
+      return;
+    }
+    setClosing(true);
+    closeTimer.current = window.setTimeout(() => {
+      dialog.current?.close();
+      onClose();
+    }, 220);
   };
   return (
     <dialog
       ref={dialog}
-      className={s.dialog}
+      className={`${s.dialog} ${closing ? s.closing : ""}`}
+      aria-busy={pending}
       onCancel={(e) => {
         e.preventDefault();
         dismiss();
@@ -237,10 +251,10 @@ export default function BookingDialog({
       }}
       aria-labelledby="booking-title"
     >
-      <div className={s.panel}>
+      <div className={s.panel} inert={closing}>
         <div className={s.top}>
           <span className={s.brand}>
-            {content.studio.name.toLocaleLowerCase("ru")}
+            <img src="/images/project-logo-03-2048.png" alt={content.studio.name} />
           </span>
           <button
             type="button"
@@ -371,7 +385,7 @@ export default function BookingDialog({
               ))}
             </nav>
             {step === 0 && (
-              <div className={s.stepContent}>
+              <div key={step} className={s.stepContent}>
                 <fieldset className={s.serviceField}>
                   <legend>Выберите услугу</legend>
                   {content.services.map((v) => (
@@ -536,7 +550,7 @@ export default function BookingDialog({
               </div>
             )}
             {step === 1 && (
-              <div className={s.stepContent}>
+              <div key={step} className={s.stepContent}>
                 <div className={s.calendarLayout}>
                   <Calendar
                     today={content.today}
@@ -623,6 +637,7 @@ export default function BookingDialog({
             )}
             {step === 2 && (
               <form
+                key={step}
                 className={s.stepContent}
                 onSubmit={submit}
                 autoComplete="off"

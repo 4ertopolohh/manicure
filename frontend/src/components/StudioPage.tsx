@@ -17,7 +17,7 @@ export default function StudioPage({
   return (
     <main id="main">
       <section className={"container " + s.hero}>
-        <div className={s.heroCopy}>
+        <div className={"reveal motion-hero " + s.heroCopy}>
           <h1>
             {content.studio.hero_title.split(" ").slice(0, 2).join(" ")}
             <br />
@@ -37,8 +37,8 @@ export default function StudioPage({
             <a href="#atelier">Подобрать свой образ</a>
           </div>
         </div>
-        <div className={s.heroVisual}>
-          <div className={s.heroImage}>
+        <div className={"reveal motion-image " + s.heroVisual}>
+          <div className={s.heroImage} data-parallax>
             <Photo
               src="/images/hero.webp"
               alt="Нежный маникюр в молочном оттенке на ухоженных руках"
@@ -50,14 +50,14 @@ export default function StudioPage({
               маленький ритуал заботы о себе
             </span>
           </div>
-          <div className={s.heroStamp}>
+          <div className={s.heroStamp} data-parallax>
             <span>твоя форма</span>
             <span className="script">твоё настроение</span>
           </div>
         </div>
       </section>
       <div className={s.promise}>
-        <div className={"container " + s.promiseInner}>
+        <div className={"container reveal motion-stagger " + s.promiseInner}>
           <span>Всё начинается с заботы</span>
           <p>
             <ShieldCheck size={19} strokeWidth={1.3} />
@@ -73,8 +73,8 @@ export default function StudioPage({
           </p>
         </div>
       </div>
-      <section id="services" className={"container reveal " + s.services}>
-        <div className={s.sectionHeading}>
+      <section id="services" className={"container " + s.services}>
+        <div className={"reveal motion-stagger " + s.sectionHeading}>
           <h2 className="sectionTitle">
             Красиво.
             <br />
@@ -86,7 +86,7 @@ export default function StudioPage({
             Выбери, что хочется сегодня.
           </p>
         </div>
-        <div className={s.serviceList}>
+        <div className={"reveal motion-stagger " + s.serviceList}>
           {content.services
             .filter((v) => v.audience === "women")
             .map((v) => (
@@ -121,8 +121,8 @@ export default function StudioPage({
         </p>
       </section>
       <Designer content={content} onBook={setBooking} />
-      <section id="inspiration" className={"container reveal " + s.inspiration}>
-        <div className={s.sectionHeading}>
+      <section id="inspiration" className={"container " + s.inspiration}>
+        <div className={"reveal motion-stagger " + s.sectionHeading}>
           <h2 className="sectionTitle">
             Чуть-чуть
             <br />
@@ -141,8 +141,8 @@ export default function StudioPage({
         </div>
         <div className={s.gallery}>
           {content.gallery.map((g, i) => (
-            <article key={g.id} className={i === 1 ? s.lower : ""}>
-              <div className={s.galleryImage}>
+            <article key={g.id} className={"reveal motion-image " + (i === 1 ? s.lower : "")} style={{ "--motion-delay": `${i * 100}ms` } as React.CSSProperties}>
+              <div className={s.galleryImage} data-parallax>
                 <Photo
                   src={g.image}
                   loading="lazy"
@@ -155,7 +155,7 @@ export default function StudioPage({
                   onClick={() =>
                     document
                       .getElementById("atelier")
-                      ?.scrollIntoView({ behavior: "smooth" })
+                      ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })
                   }
                 >
                   Подобрать похожий
@@ -169,7 +169,7 @@ export default function StudioPage({
       </section>
       <section className={s.men}>
         <div className={"container " + s.menInner}>
-          <div className={s.menGraphic} aria-hidden="true">
+          <div className={"reveal motion-draw " + s.menGraphic} aria-hidden="true">
             <svg viewBox="0 0 360 300" fill="none">
               <path
                 d="M80 278V125c0-24 30-25 30 0v68-111c0-25 30-25 30 0v104-130c0-27 31-27 31 0v130-105c0-25 31-25 31 0v126l28-39c21-25 45-4 28 21l-44 71-7 18"
@@ -190,7 +190,7 @@ export default function StudioPage({
             </svg>
             <span>ЧИСТАЯ РАБОТА.</span>
           </div>
-          <div>
+          <div className="reveal motion-stagger">
             <h2>
               Мужской маникюр.
               <br />

@@ -109,7 +109,7 @@ export default function Designer({
   return (
     <section id="atelier" className={s.atelier}>
       <div className={"container " + s.inner}>
-        <div className={s.visual}>
+        <div className={"reveal motion-scale " + s.visual}>
           <div className={s.visualHeading}>
             <h2 className="sectionTitle">
               Найди свою
@@ -120,6 +120,7 @@ export default function Designer({
           </div>
           <div className={s.nails}>
             <NailPreview
+              key={`${value("shape")}-${value("length")}`}
               shape={value("shape")}
               length={value("length")}
               color={value("color")}
@@ -134,7 +135,7 @@ export default function Designer({
             Стилизованная примерка. Цвет на экране может отличаться от покрытия.
           </p>
         </div>
-        <div className={s.controls}>
+        <div className={"reveal motion-right motion-stagger " + s.controls}>
           <p className={s.controlsIntro}>Твой маникюр начинается здесь</p>
           {groups.map(([kind, label]) => (
             <fieldset key={kind}>

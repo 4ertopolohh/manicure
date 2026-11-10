@@ -281,3 +281,8 @@
     font-size: 25px;
   }
 }
+
+.previewSvg { animation: preview-change 320ms var(--ease-out); }
+.color span { transition: scale 250ms var(--ease-out); }
+.color.selected span { scale: .86; }
+@keyframes preview-change { from { opacity: .35; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }

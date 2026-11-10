@@ -51,7 +51,7 @@ export default function Calendar({
           Позже
         </button>
       </div>
-      <div className={s.days}>
+      <div key={iso(start)} className={s.days}>
         {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"].map((d) => (
           <span key={d}>{d}</span>
         ))}

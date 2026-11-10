@@ -12,8 +12,8 @@ export default function StudioInfo({
   return (
     <>
       {" "}
-      <section id="master" className={"container reveal " + s.master}>
-        <div className={s.masterVisual}>
+      <section id="master" className={"container " + s.master}>
+        <div className={"reveal motion-image " + s.masterVisual}>
           <Photo
             src="/images/detail.webp"
             loading="lazy"
@@ -25,7 +25,7 @@ export default function StudioInfo({
             Внимание —<br />в каждом касании.
           </span>
         </div>
-        <div className={s.masterCopy}>
+        <div className={"reveal motion-right motion-stagger " + s.masterCopy}>
           <h2 className="sectionTitle">
             Приятно
             <br />
@@ -50,7 +50,7 @@ export default function StudioInfo({
           </small>
         </div>
       </section>
-      <section className={"container reveal " + s.faq}>
+      <section className={"container reveal motion-stagger " + s.faq}>
         <h2 className="sectionTitle">Перед встречей</h2>
         <div>
           {[
@@ -70,8 +70,8 @@ export default function StudioInfo({
               "Это настоящая студия?",
               "Нет. Это демонстрация сайта, созданная Триад Студио. Название, мастер, адрес и цены вымышлены. Реальных встреч и уведомлений не будет.",
             ],
-          ].map(([q, a]) => (
-            <details key={q}>
+          ].map(([q, a], i) => (
+            <details key={q} className="reveal motion-row" style={{ "--motion-delay": `${i * 75}ms` } as React.CSSProperties}>
               <summary>
                 {q}
                 <span>Подробнее</span>
@@ -82,7 +82,7 @@ export default function StudioInfo({
         </div>
       </section>
       <section id="contacts" className={s.contacts}>
-        <div className={"container " + s.contactsInner}>
+        <div className={"container reveal motion-stagger " + s.contactsInner}>
           <div>
             <h2 className="sectionTitle">
               Твоё место
@@ -131,7 +131,7 @@ export default function StudioInfo({
                 Большая Никитская
               </text>
             </svg>
-            <span className={s.mapTag}>тихая форма</span>
+            <span className={s.mapTag}><img src="/images/project-logo-03-2048.png" alt={content.studio.name} /></span>
             <p>Локальная схема · интеграция Яндекс Карт подготовлена</p>
           </div>
         </div>

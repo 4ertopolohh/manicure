@@ -37,18 +37,70 @@ export default function App() {
       "content",
       content.studio.indexable ? "index,follow" : "noindex,nofollow",
     );
-    const observer = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("visible");
-            observer.unobserve(e.target);
-          }
-        }),
-      { threshold: 0.08 },
-    );
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const desktop = window.matchMedia("(min-width: 801px) and (pointer: fine)");
+    const elements = document.querySelectorAll<HTMLElement>(".reveal");
+    const layers = document.querySelectorAll<HTMLElement>("[data-parallax]");
+    if (!("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        target.classList.add("visible");
+        target.classList.remove("motion-pending");
+        observer.unobserve(target);
+      });
+    }, { threshold: 0.08 });
+    elements.forEach((el) => {
+      if (!reduced.matches) el.classList.add("motion-pending");
+      observer.observe(el);
+    });
+    const active = new Set<HTMLElement>();
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
+      if (reduced.matches || !desktop.matches) return;
+      active.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const progress = Math.max(-1, Math.min(1,
+          (window.innerHeight / 2 - rect.top - rect.height / 2) / window.innerHeight));
+        el.style.setProperty("--parallax", `${progress * 24}px`);
+      });
+    };
+    const schedule = () => {
+      if (active.size && !frame && !reduced.matches && desktop.matches)
+        frame = requestAnimationFrame(paint);
+    };
+    const parallax = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) active.add(target as HTMLElement);
+        else active.delete(target as HTMLElement);
+      });
+      schedule();
+    });
+    layers.forEach((el) => parallax.observe(el));
+    const preference = () => {
+      if (reduced.matches) elements.forEach((el) => {
+        el.classList.remove("motion-pending");
+        el.classList.add("visible");
+      });
+      layers.forEach((el) => el.style.removeProperty("--parallax"));
+      schedule();
+    };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    reduced.addEventListener("change", preference);
+    desktop.addEventListener("change", preference);
+    return () => {
+      observer.disconnect();
+      parallax.disconnect();
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      reduced.removeEventListener("change", preference);
+      desktop.removeEventListener("change", preference);
+      elements.forEach((el) => el.classList.remove("motion-pending"));
+      layers.forEach((el) => el.style.removeProperty("--parallax"));
+    };
   }, [content]);
   const openBooking = (audience: "women" | "men" = "women") => {
     if (!content) return;
